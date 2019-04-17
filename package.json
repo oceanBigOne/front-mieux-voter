@@ -8,10 +8,13 @@
     "react-scripts": "2.1.8"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently --kill-others \"node ./mocked-api/server.js\" \"react-scripts start\"",
+    "start-front": "react-scripts start",
     "start-api": "node ./mocked-api/server.js",
+    "test": "concurrently --kill-others \"node ./mocked-api/server.js\" \"react-scripts start\" \"jest ./test/* --watch\" \"react-scripts test --watch\"",
+    "test-user": "concurrently --kill-others \"node ./mocked-api/server.js\" \"react-scripts start\" \"jest ./test/* --watch\"",
+    "test-components": "react-scripts test",
     "build": "react-scripts build",
-    "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -24,6 +27,9 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "httpdispatcher": "^2.1.2"
+    "concurrently": "^4.1.0",
+    "httpdispatcher": "^2.1.2",
+    "jest-puppeteer": "^4.1.1",
+    "puppeteer": "^1.14.0"
   }
 }
