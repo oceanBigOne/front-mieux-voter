@@ -6,6 +6,7 @@ const PORT = 3001;
 const { parse } = require('querystring');
 const url = require('url');
 const routes = require("./routes.js");
+const validator = require("./validator.js");
 
 /**
  * Function used to handle the request
@@ -26,51 +27,26 @@ function handleRequest(request, response){
             //check method
             if(request.method.toUpperCase()===route.method.toUpperCase()){
                 //parse parameter
-                let error=0;
-                let details="";
-                let data="";
+                let data='';
+                let body = '';
                 switch(route.method.toUpperCase()){
                     case 'GET' :
                         data=url_parts.query;
+                        handleReadParam(request, response, route,data);
                         break;
                     default:
-                        let body = '';
                         request.on('data', chunk => {
                             body += chunk.toString();
                         });
                         request.on('end', function() {
-                            data = parse(body);
+                           data = parse(body);
+                            handleReadParam(request, response, route,data);
                         });
 
                         break;
                 }
-                //check parameter
-                route.parameters.forEach(function(parameter){
-                    if(Object.hasOwnProperty.call(url_parts.query,parameter.name)){
-                        //todo check type of params
 
-                        /* if(typeof(url_parts.query[parameter.name])===parameter.type){
-                         }else{
-                             details+=parameter.name+" is "+typeof(url_parts.query[parameter.name])+" but "+parameter.type+" is required - ";
-                             error++;
-                         }*/
-                    }else{
-                        if(details!==""){
-                            details+=", ";
-                        }
-                        details+="Parameter "+parameter.name+" not found";
-                        error++;
-                    }
-                });
 
-                if(error===0){
-                    // Dispatch
-                    response.writeHead(200, {'Content-Type': 'application/json'});
-                    response.end(JSON.stringify(route.response, undefined, 4));
-                }else{
-                    response.writeHead(400, {'Content-Type': 'application/json'});
-                    response.end('{"status": 400,"title": "Bad Request","detail":"'+details+'"}');
-                }
             }else{
                 // error 405
                 response.writeHead(405, {'Content-Type': 'application/json'});
@@ -85,6 +61,66 @@ function handleRequest(request, response){
     } catch(err) {
         console.log(err);
     }
+}
+
+
+/**
+ * Function used to handle test parameters
+ * @param request
+ * @param response
+ * @param route parsed route
+ * @param data parsed parameter
+ */
+function handleReadParam(request, response, route,data){
+    let error=0;
+    let details="";
+
+    //check parameter
+    route.parameters.forEach(function(parameter){
+        if(!Object.hasOwnProperty.call(data,parameter.name)){
+            if(details!==""){
+                details+=", ";
+            }
+            details+="Parameter "+parameter.name+" not found";
+            error++;
+        }
+    });
+
+    //check validty of parameter
+    if(error === 0) {
+        route.parameters.forEach(function (parameter) {
+            if (Object.hasOwnProperty.call(data, parameter.name) && error === 0) {
+                //test parameter
+                if (parameter.hasOwnProperty("tests")) {
+                    parameter.tests.forEach(function (test) {
+                        if (validator[test.function](data) === false && error === 0) {
+                           BadRequest(response, JSON.stringify(test.errorResponse, undefined, 4));
+                            error+=1000;
+                        }
+                    });
+                }
+            }
+        });
+    }else{
+        BadRequest(response,'{"status": 400,"title": "Bad Request","detail":"'+details+'"}')
+    }
+
+    if(error===0){
+        GoodRequest(response,JSON.stringify( route.response, undefined, 4));
+    }
+}
+
+//send good response
+function GoodRequest(response,customResponse){
+    response.writeHead(200, {'Content-Type': 'application/json'});
+    response.end(customResponse);
+}
+
+//send bad request
+function BadRequest(response, customResponse){
+    response.writeHead(400, {'Content-Type': 'application/json'});
+    response.end(customResponse);
+    //response.end('{"status": 400,"title": "Bad Request","detail":"'+details+'"}');
 }
 
 // Create a server

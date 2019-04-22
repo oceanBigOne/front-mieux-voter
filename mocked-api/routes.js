@@ -1,10 +1,10 @@
 module.exports = {
     "/": {
         method: "get",
-        parameters:[],
-        response:{
-            "data":{
-                "mocked-api":true
+        parameters: [],
+        response: {
+            "data": {
+                "mocked-api": true
             }
         }
     },
@@ -15,7 +15,18 @@ module.exports = {
                 {
                     name: "isPermissive",
                     type: "boolean",
-                    default: false
+                    default: false,
+                    tests: [
+                        {
+                            function: "hasOwnerMailOrIsPermissive",
+                            errorResponse: {
+                                status: 400,
+                                title: "Must either be permissive or have an owner mail",
+                                detail: "Please provide an email address or let the election be permissive."
+                            }
+                        }
+                    ]
+
                 },
                 {
                     name: "ownerMail",
@@ -48,10 +59,10 @@ module.exports = {
                     default: []
                 }
             ],
-        response:{
-            "data":{
-                "type":"election",
-                "attributes":{
+        response: {
+            "data": {
+                "type": "election",
+                "attributes": {
                     "electionId": "fer545,b,8kl784h87zdfs97",
                     "ownerToken": "fe78ht485df05fh4f85d4sd;084erg"
                 }
