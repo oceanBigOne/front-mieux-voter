@@ -8,24 +8,6 @@ module.exports = {
             }
         }
     },
-    "/test/": {
-        method: "get",
-        parameters: [
-            {
-                name: "isPermissive",
-                type: "boolean",
-                default: false
-            }],
-        response:{
-            "data":{
-                "type":"election",
-                "attributes":{
-                    "electionId": "fer545,b,8kl784h87zdfs97",
-                    "ownerToken": "fe78ht485df05fh4f85d4sd;084erg"
-                }
-            }
-        }
-    },
     "/election/create/": {
         method: "post",
         parameters:
@@ -34,7 +16,38 @@ module.exports = {
                     name: "isPermissive",
                     type: "boolean",
                     default: false
-                }],
+                },
+                {
+                    name: "ownerMail",
+                    type: "string",
+                    default: ""
+                },
+                {
+                    name: "voters",
+                    type: "array",
+                    default: []
+                },
+                {
+                    name: "dateStart",
+                    type: "int",
+                    default: -1
+                },
+                {
+                    name: "dateEnd",
+                    type: "int",
+                    default: -1
+                },
+                {
+                    name: "jauges",
+                    type: "array",
+                    default: []
+                },
+                {
+                    name: "record",
+                    type: "boolean",
+                    default: []
+                }
+            ],
         response:{
             "data":{
                 "type":"election",
