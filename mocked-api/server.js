@@ -94,7 +94,7 @@ function handleReadParam(request, response, route,data){
                 if (parameter.hasOwnProperty("tests")) {
                     parameter.tests.forEach(function (test) {
                         if (validator[test.function](data) === false && error === 0) {
-                           BadRequest(response, JSON.stringify(test.errorResponse, undefined, 4));
+                           BadRequest(response, test.errorResponse);
                             error+=1000;
                         }
                     });
@@ -102,24 +102,25 @@ function handleReadParam(request, response, route,data){
             }
         });
     }else{
-        BadRequest(response,'{"status": 400,"title": "Bad Request","detail":"'+details+'"}')
+        var customResponse={"status": 400,"title": "Bad Request","detail":details}
+        BadRequest(response,customResponse)
     }
 
     if(error===0){
-        GoodRequest(response,JSON.stringify( route.response, undefined, 4));
+        GoodRequest(response, route.response);
     }
 }
 
 //send good response
 function GoodRequest(response,customResponse){
     response.writeHead(200, {'Content-Type': 'application/json'});
-    response.end(customResponse);
+    response.end(JSON.stringify(customResponse, undefined, 4));
 }
 
 //send bad request
 function BadRequest(response, customResponse){
-    response.writeHead(400, {'Content-Type': 'application/json'});
-    response.end(customResponse);
+    response.writeHead(customResponse.status, {'Content-Type': 'application/json'});
+    response.end(JSON.stringify( customResponse, undefined, 4));
     //response.end('{"status": 400,"title": "Bad Request","detail":"'+details+'"}');
 }
 
