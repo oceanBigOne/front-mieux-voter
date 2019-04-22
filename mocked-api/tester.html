@@ -1,0 +1,70 @@
+<html>
+<head>
+    <title>API TESTER</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<main class="container">
+    <form autocomplete="on" id="form">
+        <div class="row">
+            <div class="col-12">
+                <h1>API TESTER</h1>
+                <hr>
+                <label for="route">ROUTE : </label>
+                <input type="text"  class="form-control" value="" placeholder="http://localhost:3001/path/of/my/route" name="route" id="route">
+                <hr />
+                <label for="method">METHOD : </label>
+                <select class="form-control" name="method" id="method">
+                    <option value="POST" >POST</option>
+                    <option value="GET" >GET</option>
+                </select>
+                <hr />
+                <label for="params">PARAMS (query string): </label>
+                <textarea class="form-control" name="params" id="params"  placeholder="myvar1=true&myvar2=false ... myarray[]=1&myarray[]=2" style="height:400px;"></textarea>
+                <hr>
+                <button class="btn float-right btn-primary" id="submitButton">SUBMIT</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <hr>
+                <label for="result">RESULT : </label>
+                <input type="text"  class="form-control" value="" placeholder="" name="status" id="status" readonly>
+                <input type="text"  class="form-control" value="" placeholder="" name="statusText" id="statusText" readonly>
+                <textarea class="form-control" name="result" id="result" style="height:400px;" readonly></textarea>
+            </div>
+        </div>
+    </form>
+</main>
+<script type="text/javascript">
+    const form= document.getElementById('form');
+    let button= form.submitButton;
+
+
+    form.addEventListener('submit', function(evt){
+        button.innerHTML="Waiting ...";
+        evt.preventDefault();
+
+        let paramsValues=form.params.value;
+        let options = { method: form.method.value,headers: {'Accept': 'application/json, application/xml, text/plain, text/html, *.*', 'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'}};
+        let url = form.route.value;
+
+        if(form.method.value==="POST"){
+            options.body = paramsValues;
+        }else{
+            url+="?"+paramsValues;
+        }
+
+        fetch(url, options)
+            .then(function(response){
+                form.status.value=response.status;
+                form.statusText.value=response.statusText;
+                response.json().then(function(data) {
+                    form.result.value=JSON.stringify(data, undefined, 4);
+                });
+                button.innerHTML="SUBMIT";
+            });
+    });
+</script>
+</body>
+</html>
