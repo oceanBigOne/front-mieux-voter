@@ -91,8 +91,8 @@ function handleReadParam(request, response, route,data){
         route.parameters.forEach(function (parameter) {
             if (Object.hasOwnProperty.call(data, parameter.name) && error === 0) {
                 //test parameter
-                if (parameter.hasOwnProperty("tests")) {
-                    parameter.tests.forEach(function (test) {
+                if (parameter.hasOwnProperty("validators")) {
+                    parameter.validators.forEach(function (test) {
                         let functionParameters=[data];
                         if(test.hasOwnProperty("additionalParameters")){
                             functionParameters=functionParameters.concat(test.additionalParameters);

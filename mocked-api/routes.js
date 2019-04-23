@@ -16,7 +16,7 @@ module.exports = {
                     name: "isPermissive",
                     type: "boolean",
                     default: false,
-                    tests: [
+                    validators: [
                         {
                             function: "hasOwnerMailOrIsPermissive",
                             additionalParameters:[],
@@ -43,7 +43,7 @@ module.exports = {
                     name: "dateStart",
                     type: "int",
                     default: -1,
-                    tests: [
+                    validators: [
                         {
                             function: "isDateFuture",
                             additionalParameters:["dateStart"],
@@ -68,7 +68,7 @@ module.exports = {
                     name: "dateEnd",
                     type: "int",
                     default: -1,
-                    tests: [
+                    validators: [
                         {
                             function: "isDateFuture",
                             additionalParameters:["dateStart"],
