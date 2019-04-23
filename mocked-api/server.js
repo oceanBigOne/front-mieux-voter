@@ -93,7 +93,11 @@ function handleReadParam(request, response, route,data){
                 //test parameter
                 if (parameter.hasOwnProperty("tests")) {
                     parameter.tests.forEach(function (test) {
-                        if (validator[test.function](data) === false && error === 0) {
+                        let functionParameters=[data];
+                        if(test.hasOwnProperty("additionalParameters")){
+                            functionParameters=functionParameters.concat(test.additionalParameters);
+                        }
+                        if (validator[test.function].apply(this,functionParameters) === false && error === 0) {
                            BadRequest(response, test.errorResponse);
                             error+=1000;
                         }

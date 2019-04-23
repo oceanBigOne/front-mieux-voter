@@ -53,6 +53,16 @@ HTTP/1.1 400 Bad Request
 }
 ```
 
+``` 
+HTTP/1.1 400 Bad Request
+{
+       "status": 400,
+       "title": "Dates are not valid",
+       "detail": "Date end must be later than date start."
+}
+```
+
+
 ```
 HTTP/1.1 400 Bad Request 
 {

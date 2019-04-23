@@ -19,6 +19,7 @@ module.exports = {
                     tests: [
                         {
                             function: "hasOwnerMailOrIsPermissive",
+                            additionalParameters:[],
                             errorResponse: {
                                 status: 400,
                                 title: "Must either be permissive or have an owner mail",
@@ -41,12 +42,43 @@ module.exports = {
                 {
                     name: "dateStart",
                     type: "int",
-                    default: -1
+                    default: -1,
+                    tests: [
+                        {
+                            function: "isDateFuture",
+                            additionalParameters:["dateStart"],
+                            errorResponse: {
+                                status: 400,
+                                title: "Date is not valid",
+                                detail: "Please select a future date, or use -1 to desactivate a date."
+                            }
+                        },
+                        {
+                            function: "isDateStartBeforeDateEnd",
+                            additionalParameters:["dateStart","dateEnd"],
+                            errorResponse: {
+                                status: 400,
+                                title: "Dates are not valid",
+                                detail: "Date end must be later than date start."
+                            }
+                        }
+                    ]
                 },
                 {
                     name: "dateEnd",
                     type: "int",
-                    default: -1
+                    default: -1,
+                    tests: [
+                        {
+                            function: "isDateFuture",
+                            additionalParameters:["dateStart"],
+                            errorResponse: {
+                                status: 400,
+                                title: "Date is not valid",
+                                detail: "Please select a future date, or use -1 to desactivate a date."
+                            }
+                        }
+                    ]
                 },
                 {
                     name: "jauges",
