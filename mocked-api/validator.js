@@ -1,8 +1,37 @@
 module.exports={
 
     hasOwnerMailOrIsPermissive : function(data){
-        if(data.isPermissive==="false" && data.ownerMail===""){
-            return false;
+        if(data.isPermissive==="false"){
+            const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            if(re.test(String(data.ownerMail).toLowerCase())){
+                return true;
+            }else {
+                return false;
+            }
+        }else{
+            return true;
+        }
+    },
+
+    hasVotersMailsOrIsPermissive : function(data){
+        if(data.isPermissive==="false"){
+            let error=0;
+            const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+            if(Array.isArray(data.voters)){
+                data.voters.forEach(function (email){
+                    if(!re.test(String(email).toLowerCase())){
+                        error++;
+                    }
+                });
+            }else{
+                error++;
+            }
+            if(error===0){
+                return true;
+            }else{
+                return false;
+            }
         }else{
             return true;
         }

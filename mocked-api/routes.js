@@ -32,12 +32,34 @@ module.exports = {
                 {
                     name: "ownerMail",
                     type: "string",
-                    default: ""
+                    default: "",
+                    validators: [
+                        {
+                            function: "hasOwnerMailOrIsPermissive",
+                            additionalParameters:[],
+                            errorResponse: {
+                                status: 400,
+                                title: "Must either be permissive or have an owner mail",
+                                detail: "Please provide an email address or let the election be permissive."
+                            }
+                        }
+                    ]
                 },
                 {
                     name: "voters",
                     type: "array",
-                    default: []
+                    default: [],
+                    validators: [
+                        {
+                            function: "hasVotersMailsOrIsPermissive",
+                            additionalParameters:[],
+                            errorResponse: {
+                                status: 400,
+                                title: "Voters' list is not valid",
+                                detail: "Please add voters' mail when creating a non permissive election."
+                            }
+                        }
+                    ]
                 },
                 {
                     name: "dateStart",
