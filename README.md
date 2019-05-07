@@ -32,16 +32,13 @@ Starts the development server on front only ( [http://localhost:3000](http://loc
 `yarn start-api`  
 Starts the simulated API server only ( [http://localhost:3001](http://localhost:3001) )
 
-`yarn mocked-api`  
-Starts the development server with mocked API ( [http://localhost:3000](http://localhost:3000) and  [http://localhost:3001](http://localhost:3001) )
-
 `yarn test`  
 Starts the development server and the simulated API server, then starts all tests (separate components and user stories with puppeteer)
 
 `yarn test-components`  
 Starts the test runner on components in /src dir.
 
-`yarn test-user`  
+`yarn test-functional`  
 Starts the development server and the simulated API server, then starts to test user stories with puppeteer)
 
 `yarn build`  

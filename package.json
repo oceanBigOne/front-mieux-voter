@@ -12,7 +12,7 @@
     "start-front": "react-scripts start",
     "start-api": "node ./mocked-api/server.js",
     "test": "concurrently --kill-others \"node ./mocked-api/server.js\" \"react-scripts start\" \"jest ./test/* --watch\" \"react-scripts test --watch\"",
-    "test-user": "concurrently --kill-others \"node ./mocked-api/server.js\" \"react-scripts start\" \"jest ./test/* --watch\"",
+    "test-functional": "concurrently --kill-others \"node ./mocked-api/server.js\" \"react-scripts start\" \"jest ./test/* --watch\"",
     "test-components": "react-scripts test",
     "build": "react-scripts build",
     "eject": "react-scripts eject"
