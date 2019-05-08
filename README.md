@@ -23,6 +23,8 @@ yarn install
 
 # Available Scripts
 
+## Develop commands
+
 `yarn start`  
 Starts the development server with mocked API ( [http://localhost:3000](http://localhost:3000) and  [http://localhost:3001](http://localhost:3001) )
 
@@ -32,6 +34,8 @@ Starts the development server on front only ( [http://localhost:3000](http://loc
 `yarn start-api`  
 Starts the simulated API server only ( [http://localhost:3001](http://localhost:3001) )
 
+## Test commands
+
 `yarn test`  
 Starts the development server and the simulated API server, then starts all tests (separate components and user stories with puppeteer)
 
@@ -40,6 +44,8 @@ Starts the test runner on components in /src dir.
 
 `yarn test-functional`  
 Starts the development server and the simulated API server, then starts to test user stories with puppeteer)
+
+## Build command
 
 `yarn build`  
 Bundles the app into static files for production (front only).
